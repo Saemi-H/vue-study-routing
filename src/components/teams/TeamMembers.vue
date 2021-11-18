@@ -9,6 +9,7 @@
         :role="member.role"
       ></user-item>
     </ul>
+    <router-link to="/teams/t2">Go To Team2</router-link>
   </section>
 </template>
 
@@ -17,8 +18,9 @@ import UserItem from '../users/UserItem.vue';
 
 export default {
   inject:['users', 'teams'],
+  props:['teamId'],
   components: {
-    UserItem
+    UserItem,
   },
   data() {
     return {
@@ -26,12 +28,14 @@ export default {
       members: [],
     };
   },
-  created(){
-    console.log(this.$route)
+  methods:{
+    loadTeamMembers(teamId){
+      // teamId = as props. not routing
     console.log("team id", this.$route.params.teamId);
-    this.$route.path  // /teams/t1
+    // this.$route.path  // /teams/t1
     // define teamId
-    const teamId = this.$route.params.teamId 
+    //const teamId = this.$route.params.teamId ->
+    //const teamId = route.params.teamId -> deleted
     // define selectedTeam using teamId
    const selectedTeam = this.teams.find(team=> team.id === teamId)
    console.log("selectedTeam", selectedTeam); 
@@ -56,7 +60,23 @@ export default {
   this.teamName = selectedTeam.name
   // add selectedMembers as members
   this.members = selectedMembers
+    }
   },
+  created(){
+    this.loadTeamMembers(this.teamId)
+    // query param = access only through $route
+    console.log(this.$route.query);
+  },
+
+  watch:{
+    // to prevent bug. Watch whenever $route changes
+    // $route(newRoute){
+      teamId(newId){
+      this.loadTeamMembers(newId)
+      // pass argument -> above function
+    }
+  },
+
 };
 </script>
 
