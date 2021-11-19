@@ -38,22 +38,17 @@ export default {
     //const teamId = route.params.teamId -> deleted
     // define selectedTeam using teamId
    const selectedTeam = this.teams.find(team=> team.id === teamId)
-   console.log("selectedTeam", selectedTeam); 
     // define members from selectedTeam
     const Members = selectedTeam.members
-    console.log("members", Members);
     // add selectedMembers array
     const selectedMembers = []
 // using for loop members
 // *** for in : object , for of : array
     for (const mem of Members){
-      console.log("members in Members", mem);
       // define selected user = find user id = member
       const selectedUser = this.users.find(user=> user.id === mem)
-      console.log("selectedUser", selectedUser);
       // push selectedUser into selectedMembers
       selectedMembers.push(selectedUser)
-      console.log("selectedMembers", selectedMembers);
 
     }
   // add selectedTeam as teamName
@@ -65,8 +60,15 @@ export default {
   created(){
     this.loadTeamMembers(this.teamId)
     // query param = access only through $route
-    console.log(this.$route.query);
   },
+
+  // add beforeRouteUpdate function
+  // beforeRouteUpdate(to, from, next){
+  //  console.log("teammembers beforeRouteUpdate", to, from);
+    // put teamId from to params
+  // this.loadTeamMembers(to.params.teamId)
+  // next()
+  //}, //=> better to use watch
 
   watch:{
     // to prevent bug. Watch whenever $route changes
